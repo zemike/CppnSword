@@ -20,6 +20,14 @@ public class CppnNode {
 		super();
 		this.function = function;
 	}
+	
+	/**
+	 * Returns a node with a random non-none function.
+	 */
+	public CppnNode() {
+		super();
+		this.function = functionTypes.values()[(int)(Math.random() * (functionTypes.values().length-1))];
+	}
 
 	public void propagateInValue(){
 		propagateValue(inValue);

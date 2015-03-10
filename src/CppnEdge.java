@@ -13,6 +13,11 @@ public class CppnEdge {
 		this.to.input.add(this);
 	}
 	
+	public void detachFromParents(){
+		from.output.remove(this);
+		to.input.remove(this);
+	}
+	
 	public void propagateValue(){
 		to.propagateValue(from.outValue * edgeWeight);
 	}

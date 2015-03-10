@@ -17,5 +17,9 @@ public class TestSimple {
 		
 		double [] out = myNet.calculate(in);
 		System.out.println(out[0]);
+		
+		myNet.mutate();
+		out = myNet.calculate(in);
+		System.out.println(out[0]);
 	}
 }
