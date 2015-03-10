@@ -57,4 +57,8 @@ public class CppnNode {
 		
 		return output;
 	}
+	
+	public CppnNode duplicate(){
+		return new CppnNode(this.function);
+	}
 }

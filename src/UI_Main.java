@@ -68,6 +68,8 @@ public class UI_Main {
 
 	public static void panelSelected(UI_SwordPanel selection){
 		
+		myFrame.setTitle("CppSword, gen " + (selection.network.generation + 1));
+		
 		for (int i = 0; i < swordPanels.length; i++)
 		{
 			myFrame.remove(swordPanels[i]);
@@ -81,10 +83,13 @@ public class UI_Main {
 			{
 				swordPanels[i] = selection;
 				myFrame.add(selection);
+				selection.setBorder(BorderFactory.createLineBorder(Color.red));
 			}
 			else
 			{
-				CppnNetwork currentNetwork = makeSwordNetwork();
+				//CppnNetwork currentNetwork = makeSwordNetwork();
+				CppnNetwork currentNetwork = selection.network.duplicate();
+				currentNetwork.mutate();
 				UI_SwordPanel currentPanel = new UI_SwordPanel(currentNetwork, 300, 300, i);
 				currentPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 				swordPanels[i] = currentPanel;

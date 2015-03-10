@@ -1,4 +1,5 @@
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -11,6 +12,8 @@ public class CppnNetwork {
 
 	LinkedList<CppnEdge> edges = new LinkedList<CppnEdge>();
 
+	public int generation = 1;
+	
 	public double[] calculate(double[] inValues)
 	{
 		//Setup Network
@@ -42,6 +45,8 @@ public class CppnNetwork {
 
 	public void mutate()
 	{
+		generation++;
+		
 		//Add a node
 		CppnNode newNode = new CppnNode();
 		innerNodes.add(newNode);
@@ -69,7 +74,7 @@ public class CppnNetwork {
 		}
 
 		//Remove the new node if it is not used
-		if (newNode.input.size() + newNode.input.size() == 0)
+		if (newNode.input.size() + newNode.output.size() == 0)
 			innerNodes.remove(newNode);
 	}
 
@@ -101,5 +106,48 @@ public class CppnNetwork {
 		}
 
 		return false;
+	}
+	
+	public CppnNetwork duplicate(){
+		CppnNetwork toReturn = new CppnNetwork();
+		
+		toReturn.generation = generation;
+		
+		HashMap<CppnNode, CppnNode> froms = new HashMap<CppnNode, CppnNode>();
+		HashMap<CppnNode, CppnNode> tos = new HashMap<CppnNode, CppnNode>();
+		
+		for (CppnNode currentNode : inputs)
+		{
+			CppnNode newNode = currentNode.duplicate();
+			froms.put(currentNode, newNode);
+			toReturn.inputs.add(newNode);
+		}
+		
+		for (CppnNode currentNode : innerNodes)
+		{
+			CppnNode newNode = currentNode.duplicate();
+			froms.put(currentNode, newNode);
+			tos.put(currentNode, newNode);
+			toReturn.innerNodes.add(newNode);
+		}
+		
+		for (CppnNode currentNode : outputs)
+		{
+			CppnNode newNode = currentNode.duplicate();
+			tos.put(currentNode, newNode);
+			toReturn.outputs.add(newNode);
+		}
+		
+		for (CppnEdge e : edges)
+		{
+			//Debug
+//			System.out.println("Creating an edge like " + e + "(" + e.from + "->" + e.to + "), "
+//					+ "but from " + froms.get(e.from) + " and to " + tos.get(e.to) + ".");
+//			System.out.println("-Map, is the from there? -" + froms.containsKey(froms.get(e.from)));
+			
+			toReturn.edges.add(new CppnEdge(froms.get(e.from), tos.get(e.to), e.edgeWeight));
+		}
+		
+		return toReturn;
 	}
 }

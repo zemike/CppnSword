@@ -11,11 +11,10 @@ import javax.swing.JPanel;
 public class UI_SwordPanel extends JPanel {
 
 	public int index;
+	public CppnNetwork network = null;
 	
-	private CppnNetwork network = null;
 	private int [] widths = null;
 	private static final long serialVersionUID = 4219984920544280853L;
-	
 	
 	public UI_SwordPanel(CppnNetwork network, int x, int y, int index)
 	{
