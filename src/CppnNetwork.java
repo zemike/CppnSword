@@ -13,6 +13,8 @@ public class CppnNetwork {
 	LinkedList<CppnEdge> edges = new LinkedList<CppnEdge>();
 
 	public int generation = 1;
+
+	private final boolean optionRemove = true;
 	
 	public double[] calculate(double[] inValues)
 	{
@@ -46,13 +48,14 @@ public class CppnNetwork {
 	public void mutate()
 	{
 		generation++;
-		
+
 		//Add a node
 		CppnNode newNode = new CppnNode();
 		innerNodes.add(newNode);
 
 		//Add edges //TODO: create a new edge if this one is fake
-		for (int i = 0; i < 1; i++)
+		//for (int i = 0; i < 1; i++)
+		while (Math.random() < 0.2)
 		{
 			CppnNode from = getRandomNodesFromLists(inputs, innerNodes); //The non-sinks
 			CppnNode to = getRandomNodesFromLists(innerNodes, outputs); //Non-sources
@@ -67,10 +70,18 @@ public class CppnNetwork {
 			}
 		}
 
+		if (optionRemove) 
+			while (Math.random() < 0.01)
+			{
+				CppnEdge toRemove = edges.remove((int)(Math.random() * edges.size()));
+				toRemove.detachFromParents();
+			}
+
 		//Change weights (according to Gaussian?)
 		for (CppnEdge e : edges)
 		{
-			e.edgeWeight *= 1 + Util.gauss(Math.random()); //TODO: Test out values.
+			if (Math.random() < 0.5)
+				e.edgeWeight *= 1 + Util.gauss(Math.random()); //TODO: Test out values.
 		}
 
 		//Remove the new node if it is not used
@@ -107,22 +118,22 @@ public class CppnNetwork {
 
 		return false;
 	}
-	
+
 	public CppnNetwork duplicate(){
 		CppnNetwork toReturn = new CppnNetwork();
-		
+
 		toReturn.generation = generation;
-		
+
 		HashMap<CppnNode, CppnNode> froms = new HashMap<CppnNode, CppnNode>();
 		HashMap<CppnNode, CppnNode> tos = new HashMap<CppnNode, CppnNode>();
-		
+
 		for (CppnNode currentNode : inputs)
 		{
 			CppnNode newNode = currentNode.duplicate();
 			froms.put(currentNode, newNode);
 			toReturn.inputs.add(newNode);
 		}
-		
+
 		for (CppnNode currentNode : innerNodes)
 		{
 			CppnNode newNode = currentNode.duplicate();
@@ -130,24 +141,24 @@ public class CppnNetwork {
 			tos.put(currentNode, newNode);
 			toReturn.innerNodes.add(newNode);
 		}
-		
+
 		for (CppnNode currentNode : outputs)
 		{
 			CppnNode newNode = currentNode.duplicate();
 			tos.put(currentNode, newNode);
 			toReturn.outputs.add(newNode);
 		}
-		
+
 		for (CppnEdge e : edges)
 		{
 			//Debug
-//			System.out.println("Creating an edge like " + e + "(" + e.from + "->" + e.to + "), "
-//					+ "but from " + froms.get(e.from) + " and to " + tos.get(e.to) + ".");
-//			System.out.println("-Map, is the from there? -" + froms.containsKey(froms.get(e.from)));
-			
+			//			System.out.println("Creating an edge like " + e + "(" + e.from + "->" + e.to + "), "
+			//					+ "but from " + froms.get(e.from) + " and to " + tos.get(e.to) + ".");
+			//			System.out.println("-Map, is the from there? -" + froms.containsKey(froms.get(e.from)));
+
 			toReturn.edges.add(new CppnEdge(froms.get(e.from), tos.get(e.to), e.edgeWeight));
 		}
-		
+
 		return toReturn;
 	}
 }

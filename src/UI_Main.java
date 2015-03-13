@@ -8,9 +8,11 @@ import javax.swing.JFrame;
 
 public class UI_Main {
 
-	public static int nPanels = 9;
+	public static int nPanels = 8;
 	public static UI_SwordPanel[] swordPanels = null;
 
+	private static int xSize = 150, ySize = 600;
+	
 	private static JFrame myFrame;
 
 	public static void main(String args[])
@@ -18,7 +20,7 @@ public class UI_Main {
 		myFrame = new JFrame("CppSword");
 		myFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		myFrame.setLayout(new FlowLayout());
-		myFrame.setPreferredSize(new Dimension(300 * 3 + 100, 300 * 3 + 100));
+		myFrame.setPreferredSize(new Dimension(xSize * 8 + 100, ySize * 1 + 100));
 
 		//Initialize the panels
 		swordPanels = new UI_SwordPanel[nPanels];
@@ -26,7 +28,7 @@ public class UI_Main {
 		for (int i = 0; i < nPanels; i++)
 		{
 			CppnNetwork currentNetwork = makeSwordNetwork();
-			UI_SwordPanel currentPanel = new UI_SwordPanel(currentNetwork, 300, 300, i);
+			UI_SwordPanel currentPanel = new UI_SwordPanel(currentNetwork, 150, 600, i);
 			currentPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 			swordPanels[i] = currentPanel;
 			myFrame.add(currentPanel);
@@ -90,7 +92,7 @@ public class UI_Main {
 				//CppnNetwork currentNetwork = makeSwordNetwork();
 				CppnNetwork currentNetwork = selection.network.duplicate();
 				currentNetwork.mutate();
-				UI_SwordPanel currentPanel = new UI_SwordPanel(currentNetwork, 300, 300, i);
+				UI_SwordPanel currentPanel = new UI_SwordPanel(currentNetwork, xSize, ySize, i);
 				currentPanel.setBorder(BorderFactory.createLineBorder(Color.gray));
 				swordPanels[i] = currentPanel;
 				myFrame.add(currentPanel);
