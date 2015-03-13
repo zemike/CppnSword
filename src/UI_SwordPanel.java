@@ -14,6 +14,7 @@ public class UI_SwordPanel extends JPanel {
 	public CppnNetwork network = null;
 	
 	private int [] widths = null;
+	private Color [] colors = null;
 	private static final long serialVersionUID = 4219984920544280853L;
 	
 	public UI_SwordPanel(CppnNetwork network, int x, int y, int index)
@@ -40,6 +41,12 @@ public class UI_SwordPanel extends JPanel {
 		
 		Graphics2D g2d = (Graphics2D) g;
 		
+		for (int y = 0; y<this.getHeight() - 1; y++)
+		{
+			g.setColor(colors[y]);
+			g2d.drawLine(this.getWidth()/2 - widths[y], y, this.getWidth()/2 + widths[y+1], y);
+		}
+		
 		g.setColor(Color.black);
 		
 		for (int y = 0; y<this.getHeight() - 1; y++)
@@ -56,14 +63,19 @@ public class UI_SwordPanel extends JPanel {
 		
 		double [] networkInput = {0,1};
 		
+		colors = new Color[this.getHeight()];
+		
 		//Getting the widths from the network
 		for (double p = 0; p < 1; p = Math.min(p+1.0/this.getHeight(), 1))
 		{
 			networkInput[0] = p;
-			double newWidth = network.calculate(networkInput)[0];
+			double[] networkOutput = network.calculate(networkInput);
+			double newWidth = networkOutput[0];
 			doubleWidths[(int)(this.getHeight() * p)] = newWidth;
 			if (newWidth > maxWidth)
 				maxWidth = newWidth;
+			
+			colors[(int)(this.getHeight() * p)] = normalizeColor((float) networkOutput[1], (float)networkOutput[2], (float)networkOutput[3]);
 		}
 		
 		//Normalizing if the input is too big...
@@ -79,5 +91,14 @@ public class UI_SwordPanel extends JPanel {
 		widths = new int[doubleWidths.length];
 		for (int i = 0; i < widths.length; i++)
 			widths[i] = (int) doubleWidths[i];
+	}
+	
+	private Color normalizeColor(float r, float g, float b)
+	{
+		r = Math.max(Math.min(r, 1),0);
+		g = Math.max(Math.min(g, 1),0);
+		b = Math.max(Math.min(b, 1),0);
+		
+		return new Color(r,g,b);
 	}
 }

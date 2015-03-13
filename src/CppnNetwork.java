@@ -14,7 +14,7 @@ public class CppnNetwork {
 
 	public int generation = 1;
 
-	private final boolean optionRemove = true;
+	private final boolean optionRemove = false;
 	
 	public double[] calculate(double[] inValues)
 	{

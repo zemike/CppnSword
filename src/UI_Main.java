@@ -58,7 +58,14 @@ public class UI_Main {
 		sNet.innerNodes.add(internal);
 
 		CppnNode width = new CppnNode (CppnNode.functionTypes.none);
+		CppnNode r = new CppnNode (CppnNode.functionTypes.none);
+		CppnNode g = new CppnNode (CppnNode.functionTypes.none);
+		CppnNode b = new CppnNode (CppnNode.functionTypes.none);
 		sNet.outputs.add(width);
+		sNet.outputs.add(r);
+		sNet.outputs.add(g);
+		sNet.outputs.add(b);
+		
 
 		CppnEdge connectionA = new CppnEdge(p, internal, 1);
 		CppnEdge connectionB = new CppnEdge(internal, width, 1);

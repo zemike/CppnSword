@@ -6,7 +6,7 @@ public class CppnNode {
 	LinkedList<CppnEdge> output = new LinkedList<CppnEdge>();
 	double outValue = 0;
 	double inValue = 0;
-	enum functionTypes {sine, gauss, sawtooth, none};
+	enum functionTypes {sine, gauss, none};
 	functionTypes function;
 	
 	public void propagateValue(double inValue) {
@@ -54,9 +54,9 @@ public class CppnNode {
 //		case square:
 //			output = (input - 0.5) * (input - 0.5);
 			
-		case sawtooth:
-			output = 8 * input - Math.floor(8 * input);
-			break;
+//		case sawtooth:
+//			output = 8 * input - Math.floor(8 * input);
+//			break;
 			
 		case none:
 		}
